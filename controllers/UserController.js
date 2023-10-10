@@ -56,3 +56,52 @@ exports.logIn = async (req, res) => {
     await res.status(500).json({ message: err.message });
   }
 };
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.findAll();
+    console.log(users);
+    await res.status(200).json(users);
+  } catch (err) {
+    await res.status(500).json({ message: err.message });
+  }
+};
+
+exports.getOneUser = async (req, res) => {
+  try {
+    const user = await User.findOne({ where: { id_user: req.params.id } });
+    await res.status(200).json(user);
+  } catch (err) {
+    await res.status(404).json({ message: err.message });
+  }
+};
+
+exports.updateUser = async (req, res) => {
+  try {
+    //trouver comment faire pour que l'admin puisse supprimer et que l'utilisateur puisse
+
+    const user = await User.update({
+      where: {
+        id_user: req.params.id,
+      },
+    });
+    await res.status(200).json({ message: "Utilisateur updaté" });
+  } catch (err) {
+    await res.status(500).json({ message: err.message });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    //trouver comment faire pour que l'admin puisse supprimer et que l'utilisateur puisse
+
+    const user = await User.destroy({
+      where: {
+        id_user: req.params.id,
+      },
+    });
+    await res.status(200).json({ message: "Utilisateur supprimé" });
+  } catch (err) {
+    await res.status(500).json({ message: err.message });
+  }
+};

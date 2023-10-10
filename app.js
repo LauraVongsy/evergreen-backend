@@ -11,6 +11,7 @@ const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 
 app.use("/api/auth", userRoutes);
-app.use("/api/product", productRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/categories", categoryRoutes);
 
 module.exports = app;
