@@ -1,5 +1,7 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('mysql::memory:');
+const { DataTypes } = require('sequelize');
+// const sequelize = new Sequelize('mysql::memory:');
+const sequelize = require("../database/db");
+
 
 const Role = sequelize.define('roles', {
     id_role: {
