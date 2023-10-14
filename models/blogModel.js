@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../database/db");
 
-const ArticleBlog = sequelize.define('article_blog', {
+const ArticleBlog = sequelize.define('blog_articles', {
     id_article: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -22,7 +22,7 @@ const ArticleBlog = sequelize.define('article_blog', {
     },
 }, {
 
-    tableName: 'article_blog', // Le nom de la table dans la base de données
+    tableName: 'blog_articles', // Le nom de la table dans la base de données
 
 });
 

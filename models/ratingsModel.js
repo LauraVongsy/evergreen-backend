@@ -12,28 +12,7 @@ const Rating = sequelize.define(
     rating: {
       type: DataTypes.INTEGER,
       allowNull: false,
-    },
-    date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
-    },
-    id_user: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "users",
-        key: "id_user",
-      },
-      allowNull: false,
-    },
-    id_product: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "products",
-        key: "id_product",
-      },
-      allowNull: false,
-    },
+    }
   },
   {
     tableName: "ratings",

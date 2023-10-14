@@ -1,9 +1,8 @@
 const { DataTypes } = require("sequelize");
-// const sequelize = new Sequelize("mysql::memory:");
 const sequelize = require("../database/db");
 
 
-const Category = sequelize.define("category", {
+const Category = sequelize.define("categories", {
   id_category: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -16,6 +15,8 @@ const Category = sequelize.define("category", {
   category_description: {
     type: DataTypes.STRING(250),
   },
+}, {
+  tableName: 'categories'
 });
 
 module.exports = Category;
