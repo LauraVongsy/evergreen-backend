@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 
 const sequelize = require("../database/db");
+const Category = require("./categoryModel");
 
 
 const Product = sequelize.define(
@@ -50,12 +51,23 @@ const Product = sequelize.define(
     category_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: "categories", // Nom de la table cible
+        key: "category_id",   // Nom de la clé primaire de la table cible
+      },
     },
   },
   {
     tableName: "products",
     underscored: true,
+    timestamps: false
   }
 );
+
+Product.belongsTo(Category, {
+  foreignKey: "category_id",
+
+});
+
 
 module.exports = Product;

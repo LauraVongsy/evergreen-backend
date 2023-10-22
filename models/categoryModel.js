@@ -3,7 +3,7 @@ const sequelize = require("../database/db");
 
 
 const Category = sequelize.define("categories", {
-  id_category: {
+  category_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
@@ -15,8 +15,12 @@ const Category = sequelize.define("categories", {
   category_description: {
     type: DataTypes.STRING(250),
   },
+  category_picture: {
+    type: DataTypes.STRING(50)
+  }
 }, {
-  tableName: 'categories'
+  tableName: 'categories',
+  timestamps: false
 });
 
 module.exports = Category;

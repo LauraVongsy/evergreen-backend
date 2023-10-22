@@ -1,5 +1,4 @@
 const { DataTypes } = require('sequelize');
-// const sequelize = new Sequelize('mysql::memory:');
 const sequelize = require("../database/db");
 
 

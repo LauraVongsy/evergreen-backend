@@ -1,4 +1,5 @@
 const Category = require("../models/categoryModel");
+const Product = require("../models/productModel");
 
 exports.getAllCategories = async (req, res) => {
   try {
@@ -12,10 +13,11 @@ exports.getAllCategories = async (req, res) => {
 
 exports.getOneCategory = async (req, res) => {
   try {
-    const category = await Category.findOne({
-      where: { id_category: req.param.id },
+    const category = await Product.findAll({
+      where: { category_id: req.params.id },
+      include: "category" //nom de l'association des tables products et categories
     });
-    console.log(categories);
+    console.log(category);
     await res.status(200).json(category);
   } catch (err) {
     await res.status(500).json({ message: err.message });
