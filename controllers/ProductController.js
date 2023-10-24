@@ -4,7 +4,7 @@ const Product = require("../models/productModel");
 exports.getAllProducts = async (req, res) => {
   try {
     const product = await Product.findAll();
-    await res.status(200).json(post);
+    await res.status(200).json(product);
   } catch (err) {
     await res.status(500).json({ message: err.message });
   }
@@ -14,7 +14,7 @@ exports.getAllProducts = async (req, res) => {
 exports.getOneProduct = async (req, res) => {
   try {
     const product = await Product.findOne({
-      where: { product_id: req.params.id },
+      where: { id_product: req.params.id },
     });
     await res.status(200).json(product);
   } catch (err) {
@@ -40,7 +40,7 @@ exports.createProduct = async (req, res) => {
       id_heat: newProduct.id_heat,
       id_sunlight: newProduct.id_sunlight,
       id_level: newProduct.id_level,
-      category_id: newProduct.category_id, //modifier en id_category en bdd
+      category_id: newProduct.category_id,
     });
 
     console.log(product);

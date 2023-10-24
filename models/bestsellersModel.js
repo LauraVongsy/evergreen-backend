@@ -1,23 +1,30 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../database/db");
+const Product = require("./productModel");
 
 const Bestsellers = sequelize.define('bestsellers', {
-    id: {
-        type: sequelize.INTEGER,
+    bestseller_id: {
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
     },
-    productId: {
-        type: sequelize.INTEGER,
+    id_product: {
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'Products',
-            key: 'product_id',
+            model: 'products',
+            key: 'id_product',
         },
     },
 
 }, {
-    tableName: 'bestsellers'
+    tableName: 'bestsellers',
+    timestamps: false
 });
+
+Bestsellers.belongsTo(Product,
+    {
+        foreignKey: "id_product"
+    })
 
 module.exports = Bestsellers;
