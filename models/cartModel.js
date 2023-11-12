@@ -1,25 +1,33 @@
+// cartModel.js
 const { DataTypes } = require("sequelize");
 const sequelize = require("../database/db");
+const Product = require("./productModel");
 
-const Cart = sequelize.define('cart',
-    {
-        id_cart: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-        },
-        id_product: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: 'productModel', // Modèle Sequelize de la table Products
-                key: 'id_product', // Colonne de référence dans la table Products
-            },
-        },
-    }, {
-
-    tableName: 'cart',
-
+const Cart = sequelize.define('cart', {
+    id_cart: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
 });
 
-module.exports = Cart;
+const CartItem = sequelize.define('cart_item', {
+    quantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+});
+
+// Associez les modèles pour créer une relation many-to-many
+Cart.belongsToMany(Product, {
+    through: CartItem,
+    foreignKey: 'id_cart',
+});
+
+Product.belongsToMany(Cart, {
+    through: CartItem,
+    foreignKey: 'id_product',
+});
+
+
+module.exports = { Cart, CartItem };

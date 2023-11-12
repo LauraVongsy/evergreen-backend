@@ -6,54 +6,66 @@ const User = require("../models/userModel");
 
 exports.signUp = async (req, res) => {
   try {
-    const { email, user_password, last_name, first_name } = req.body;
+    const { email, password, userLastname, userFirstname } = req.body;
     console.log(req.body);
-    const hash = await bcrypt.hash(user_password, 10);
+    const hash = await bcrypt.hash(password, 10);
 
     const user = await User.create({
-      email,
+      email: email,
       user_password: hash,
-      first_name,
-      last_name,
+      first_name: userFirstname,
+      last_name: userLastname,
       id_role: 2,
     });
 
     console.log(user);
     res.status(201).json({
       userId: user.id_user,
-      token: jwt.sign({ userId: user.id_role }, process.env.JWT, {
+      userFirstname: user.first_name, // Correspond à first_name dans la base de données
+      userLastname: user.last_name,   // Correspond à last_name dans la base de données
+      token: jwt.sign({ userId: user.id_user }, process.env.JWT, {
         expiresIn: "24h",
       }),
       message: "Utilisateur créé",
     });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    console.error('Erreur lors de la création de l\'utilisateur:', error);
+    return res.status(500).json({ message: 'Erreur lors de la création de l\'utilisateur' });
   }
 };
 
 // connexion;
 exports.logIn = async (req, res) => {
   try {
-    const { email, user_password } = req.body;
+    const { email, password } = req.body;
 
-    await User.findOne({ where: { email: email } }).then((user) => {
-      if (!user) {
-        return res.status(404).json({ message: "Utilisateur non trouvé" });
-      }
-      bcrypt.compare(user_password, user.user_password).then((valid) => {
-        if (!valid) {
-          return res.status(400).json({ message: "Mot de passe invalide" });
-        }
-        res.status(200).json({
-          userId: user.id_user,
-          token: jwt.sign({ userId: user.id_user }, process.env.JWT, {
-            expiresIn: "24h",
-          }),
-        });
-      });
+    // Recherchez l'utilisateur par e-mail
+    const user = await User.findOne({ where: { email: email } });
+
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+
+    // Comparez le mot de passe fourni avec le mot de passe haché stocké
+    const validPassword = await bcrypt.compare(password, user.user_password);
+
+    if (!validPassword) {
+      return res.status(400).json({ message: "Mot de passe invalide" });
+    }
+
+    // Générez le token JWT et renvoyez la réponse
+    res.status(200).json({
+      userId: user.id_user,
+      userFirstname: user.first_name, // Correspond à first_name dans la base de données
+      userLastname: user.last_name,   // Correspond à last_name dans la base de données
+      token: jwt.sign({ userId: user.id_user }, process.env.JWT, {
+        expiresIn: "24h",
+      }),
     });
+
   } catch (err) {
-    await res.status(500).json({ message: err.message });
+    console.error('Erreur lors de la requête d\'authentification:', err);
+    res.status(500).json({ message: err.message });
   }
 };
 
