@@ -18,24 +18,46 @@ const Order = sequelize.define('order', {
     },
     payment_method: {
         type: DataTypes.STRING(50),
+        defaultValue: 'carte bancaire',
     },
     payment_reference: {
-        type: DataTypes.STRING(150)
+        type: DataTypes.STRING(150),
+        unique: true,
+        defaultValue: DataTypes.UUIDV4,
     },
     id_user: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'userModel', // Modèle Sequelize de la table Products
-            key: 'id_user', // Colonne de référence dans la table Products
+            model: 'userModel',
+            key: 'id_user',
         }
     }
 }, {
-
     tableName: 'orders',
+});
 
-}
+// Ajouter une relation pour les items de panier (CartItem)
+Order.hasMany(CartItem, { as: 'cartItems', foreignKey: 'id_order' });
 
-);
+// Modifier le modèle CartItem en conséquence
+const CartItem = sequelize.define('cartItem', {
+    id_cart_item: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    product_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    quantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+});
+
+// Ajouter une relation pour le modèle CartItem
+CartItem.belongsTo(Order, { foreignKey: 'id_order' });
 
 module.exports = Order;
