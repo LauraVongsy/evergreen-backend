@@ -1,8 +1,7 @@
-const Order = require("../models/orderModel.js");
 const Cart = require("../models/cartModel.js");
 const Product = require("../models/productModel.js");
 
-exports.getOneOrder = async (req, res) => {
+exports.getOneCart = async (req, res) => {
 
     try {
         const cart = await Cart.findOne({ where: { id_cart: req.param.id } })
@@ -12,7 +11,7 @@ exports.getOneOrder = async (req, res) => {
     }
 }
 
-exports.updateOrder = async (req, res) => {
+exports.updateCart = async (req, res) => {
     const cart = await Cart.findOne({ where: { id_cart: req.param.id } })
     try {
         const updatedCart = await Cart.update(cart);
@@ -21,7 +20,7 @@ exports.updateOrder = async (req, res) => {
         res.status(400).json({ message: err.message });
     }
 }
-exports.deleteOrder = async (req, res) => {
+exports.deleteCart = async (req, res) => {
 
     try {
         const cart = await Cart.destroy({ where: { id_cart: req.param.id } })
@@ -30,12 +29,11 @@ exports.deleteOrder = async (req, res) => {
         res.status(400).json({ message: err.message });
     }
 }
-exports.createOrder = async (req, res) => {
+exports.createCart = async (req, res) => {
 
     try {
         const id_user = req.id_user;
         const productsToAdd = req.body.products;
-
 
         let cart = await Cart.findOne({ where: { id_user: id_user } });
         if (!cart) {

@@ -14,7 +14,7 @@ exports.getAllCategories = async (req, res) => {
 exports.getOneCategory = async (req, res) => {
   try {
     const category = await Product.findAll({
-      where: { category_id: req.params.id },
+      where: { id_category: req.params.id },
       include: "category" //nom de l'association des tables products et categories
     });
     console.log(category);
@@ -28,7 +28,7 @@ exports.createCategory = async (req, res) => {
   const newCategory = req.body;
   try {
     const category = await Category.create({
-      category_id: newCategory.category_id, //modifier en id_category en bdd
+      id_category: newCategory.id_category, //modifier en id_category en bdd
       category_label: newCategory.category_label,
       category_description: newCategory.category_description,
     });
@@ -43,7 +43,7 @@ exports.updateCategory = async (req, res) => {
   const updatedCategory = req.body;
   try {
     const category = await Category.findOne({
-      where: { category_id: req.params.id },
+      where: { id_category: req.params.id },
     });
     if (!category) {
       return res.status(404).json({ message: "categorie non trouvée" });
@@ -58,7 +58,7 @@ exports.updateCategory = async (req, res) => {
 exports.deleteCategory = async (req, res) => {
   try {
     const category = await Category.findOne({
-      where: { category_id: req.params.id },
+      where: { id_category: req.params.id },
     });
     if (!category) {
       return res.status(404).json({ message: "categorie non trouvée" });

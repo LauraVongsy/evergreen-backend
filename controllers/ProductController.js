@@ -22,13 +22,10 @@ exports.getOneProduct = async (req, res) => {
   }
 };
 
-//creation product
+//creation d'un produit en base de données
 exports.createProduct = async (req, res) => {
   try {
     const newProduct = req.body;
-
-    console.log(req.body);
-
     const product = await Product.create({
       product_name: newProduct.product_name,
       product_image: newProduct.product_image,
@@ -40,11 +37,8 @@ exports.createProduct = async (req, res) => {
       id_heat: newProduct.id_heat,
       id_sunlight: newProduct.id_sunlight,
       id_level: newProduct.id_level,
-      category_id: newProduct.category_id,
+      id_category: newProduct.id_category,
     });
-
-    console.log(product);
-
     res.status(201).json({
       newProduct,
       message: "produit créé",
@@ -60,6 +54,9 @@ exports.getProductsByCategory = async (req, res) => {
     const categoryProducts = await Product.findAll({
       where: { id_category: categoryId },
     });
+    if (!categoryProducts) {
+      return res.status(404).json({ message: "Catégorie non trouvée" });
+    }
     return res.status(200).json(categoryProducts);
   } catch (err) {
     await res.status(400).json({ message: err.message });

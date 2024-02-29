@@ -8,6 +8,7 @@ exports.getAllBestsellers = async (req, res) => {
         const bestseller = await Bestsellers.findAll({
             include: Product
         });
+        console.log(`voici les bestsellers`, bestseller);
         await res.status(200).json(bestseller);
     } catch (err) {
         await res.status(500).json({ message: err.message });

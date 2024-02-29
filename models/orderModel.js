@@ -1,14 +1,13 @@
-const { DataTypes } = require("sequelize");
+
+const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../database/db");
+const User = require("./userModel");
 
 const Order = sequelize.define('order', {
     id_order: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-    },
-    order_date: {
-        type: DataTypes.DATE,
     },
     total_price: {
         type: DataTypes.DECIMAL(5, 2),
@@ -25,39 +24,26 @@ const Order = sequelize.define('order', {
         unique: true,
         defaultValue: DataTypes.UUIDV4,
     },
+    created_at: {
+        type: DataTypes.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+    },
+    updated_at: {
+        type: DataTypes.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+    },
     id_user: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
-            model: 'userModel',
+            model: 'user',
             key: 'id_user',
-        }
+        },
     }
 }, {
-    tableName: 'orders',
+    tableName: 'order',
 });
 
-// Ajouter une relation pour les items de panier (CartItem)
-Order.hasMany(CartItem, { as: 'cartItems', foreignKey: 'id_order' });
-
-// Modifier le modèle CartItem en conséquence
-const CartItem = sequelize.define('cartItem', {
-    id_cart_item: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-    product_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
-    quantity: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
-});
-
-// Ajouter une relation pour le modèle CartItem
-CartItem.belongsTo(Order, { foreignKey: 'id_order' });
+Order.belongsTo(User, { foreignKey: 'id_user' });
 
 module.exports = Order;

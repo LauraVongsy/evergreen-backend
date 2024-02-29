@@ -1,4 +1,8 @@
 const express = require("express");
+const auth = require("../middlewares/auth")
+
+
+
 
 const {
   getAllCategories,
@@ -11,7 +15,8 @@ const router = express.Router();
 
 router.get("/", getAllCategories);
 router.get("/:id", getOneCategory);
-router.post("/auth/", updateCategory);
-router.post("/auth/", deleteCategory);
+router.post("/update", auth, updateCategory);
+router.post("/create", auth, updateCategory);
+router.post("/delete", auth, deleteCategory);
 
 module.exports = router;

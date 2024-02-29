@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const auth = require("../middlewares/auth")
 
 const {
     getOneBlog,
@@ -11,8 +12,8 @@ const {
 
 router.get("/", getAllBlog);
 router.get("/:id", getOneBlog);
-router.post("/auth", createBlog);
-router.put("/auth", updateBlog);
-router.delete("/auth", deleteBlog);
+router.post("/create", auth, createBlog);
+router.put("/update", auth, updateBlog);
+router.delete("/delete", auth, deleteBlog);
 
 module.exports = router;

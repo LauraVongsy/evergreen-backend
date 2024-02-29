@@ -1,16 +1,18 @@
 const express = require("express");
 const router = express.Router();
+const auth = require("../middlewares/auth")
+
 
 const {
     getOneOrder,
     updateOrder,
     deleteOrder,
     createOrder
-} = require("../controllers/OrderController");
+} = require("../controllers/CartController");
 
-router.get = ("/:id", getOneOrder);
-router.put = ("/:id", updateOrder);
-router.delete = ("/:id", deleteOrder);
-router.post = ("/create-order", createOrder);
+router.get = ("/:id", auth, getOneOrder);
+router.put = ("/:id", auth, updateOrder);
+router.delete = ("/:id", auth, deleteOrder);
+router.post = ("/create-order", auth, createOrder);
 
 module.exports = router;

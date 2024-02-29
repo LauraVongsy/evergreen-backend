@@ -7,7 +7,7 @@ const User = require("../models/userModel");
 exports.signUp = async (req, res) => {
   try {
     const { email, password, userLastname, userFirstname } = req.body;
-    console.log(req.body);
+
     const hash = await bcrypt.hash(password, 10);
 
     const user = await User.create({
@@ -18,12 +18,11 @@ exports.signUp = async (req, res) => {
       id_role: 2,
     });
 
-    console.log(user);
     res.status(201).json({
       userId: user.id_user,
-      userFirstname: user.first_name, // Correspond à first_name dans la base de données
-      userLastname: user.last_name,   // Correspond à last_name dans la base de données
-      token: jwt.sign({ userId: user.id_user }, process.env.JWT, {
+      userFirstname: user.first_name,
+      userLastname: user.last_name,
+      token: jwt.sign({ userId: user.id_user, role: user.id_role }, process.env.JWT, {
         expiresIn: "24h",
       }),
       message: "Utilisateur créé",
@@ -39,26 +38,26 @@ exports.logIn = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Recherchez l'utilisateur par e-mail
+    // Recherche l'utilisateur par e-mail
     const user = await User.findOne({ where: { email: email } });
 
     if (!user) {
       return res.status(404).json({ message: "Utilisateur non trouvé" });
     }
 
-    // Comparez le mot de passe fourni avec le mot de passe haché stocké
+    // Compare le mot de passe fourni avec le mot de passe haché stocké
     const validPassword = await bcrypt.compare(password, user.user_password);
 
     if (!validPassword) {
       return res.status(400).json({ message: "Mot de passe invalide" });
     }
 
-    // Générez le token JWT et renvoyez la réponse
+    // Génère le token JWT et renvoie la réponse
     res.status(200).json({
       userId: user.id_user,
-      userFirstname: user.first_name, // Correspond à first_name dans la base de données
-      userLastname: user.last_name,   // Correspond à last_name dans la base de données
-      token: jwt.sign({ userId: user.id_user }, process.env.JWT, {
+      userFirstname: user.first_name,
+      userLastname: user.last_name,
+      token: jwt.sign({ userId: user.id_user, role: user.id_role }, process.env.JWT, {
         expiresIn: "24h",
       }),
     });

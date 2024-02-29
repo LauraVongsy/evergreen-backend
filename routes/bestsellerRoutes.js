@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const auth = require("../middlewares/auth")
+
 
 const {
     getOneBestseller,
@@ -13,8 +15,8 @@ const {
 
 router.get("/", getAllBestsellers);
 router.get("/:id", getOneBestseller);
-router.post("/auth", createBestseller);
-router.put("/auth/:id", updateBestseller);
-router.delete("/auth/:id", deleteBestseller);
+router.post("/create", auth, createBestseller);
+router.put("/update/:id", auth, updateBestseller);
+router.delete("/delete/:id", auth, deleteBestseller);
 
 module.exports = router;

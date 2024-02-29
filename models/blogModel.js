@@ -22,10 +22,10 @@ const ArticleBlog = sequelize.define('blog_articles', {
     },
 }, {
 
-    tableName: 'blog_articles', // Le nom de la table dans la base de données
+    tableName: 'blog_articles',
 
 });
 
-// Si vous avez besoin de définir des associations avec d'autres modèles Sequelize, vous pouvez le faire ici
+
 
 module.exports = ArticleBlog;
