@@ -24,7 +24,9 @@ exports.getOneProduct = async (req, res) => {
 
 //creation d'un produit en base de données
 exports.createProduct = async (req, res) => {
+
   try {
+
     const newProduct = req.body;
     const product = await Product.create({
       product_name: newProduct.product_name,
